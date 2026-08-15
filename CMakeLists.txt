@@ -20,5 +20,10 @@ add_library(imgui STATIC
 target_include_directories(imgui PUBLIC ${IMGUI_DIR} ${IMGUI_DIR}/backends)
 target_link_libraries(imgui PUBLIC glfw opengl32)
 
-add_executable(CPU_RayTracer src/main.cpp)
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.cpp" "src/*.h")
+
+add_executable(CPU_RayTracer ${SOURCES})
+
+target_include_directories(CPU_RayTracer PRIVATE src)
+
 target_link_libraries(CPU_RayTracer PRIVATE imgui)
