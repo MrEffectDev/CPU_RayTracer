@@ -56,7 +56,7 @@ int main() {
     // 3. Render Settings and Complex Scene Setup (Cornell Box + Objects)
     constexpr int width = 800;
     constexpr int height = 600;
-    constexpr int tile_size = 128;
+    constexpr int tile_size = 32;
 
     std::vector<Sphere> scene = {
         // --- Ground Plane ---
@@ -78,7 +78,7 @@ int main() {
     std::atomic<int> completed_tiles{ 0 };
 
     RenderContext ctx{
-        width, height, 300, 12, {0.0, 0.0, 1.5}, &scene,
+        width, height, 600, 12, {0.0, 0.0, 1.5}, &scene,
         &texture_buffer, &completed_tiles, 0
     };
 
@@ -179,7 +179,9 @@ int main() {
             glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, texture_buffer.data());
         }
 
-        ImGui::Image(reinterpret_cast<void*>(static_cast<intptr_t>(render_texture)), ImVec2(static_cast<float>(width), static_cast<float>(height)));
+        ImGui::Image(reinterpret_cast<void*>(static_cast<intptr_t>(render_texture)),
+            ImVec2(static_cast<float>(width), static_cast<float>(height)),
+            ImVec2(0, 1), ImVec2(1, 0));
         ImGui::End();
 
         // --- Render ImGui onto OpenGL ---
