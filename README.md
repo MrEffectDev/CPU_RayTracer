@@ -1,5 +1,8 @@
 # CPU RayTracer
 
+<img width="1265" height="712" alt="Preview1" src="https://github.com/user-attachments/assets/59ba6234-41e3-447d-8529-d389289fcc51" />
+
+
 A pet project: a CPU ray tracer written from scratch in C++. No vcpkg, no Embree — just wanted to understand how this stuff actually works under the hood.
 
 Currently supports:
