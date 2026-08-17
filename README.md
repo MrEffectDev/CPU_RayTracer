@@ -2,6 +2,7 @@
 
 <img width="1265" height="712" alt="Preview1" src="https://github.com/user-attachments/assets/59ba6234-41e3-447d-8529-d389289fcc51" />
 
+<img width="1281" height="728" alt="image" src="https://github.com/user-attachments/assets/aeca8d49-f40f-4ed8-82c6-08701e63ae53" />
 
 A pet project: a CPU ray tracer written from scratch in C++. No vcpkg, no Embree — just wanted to understand how this stuff actually works under the hood.
 
