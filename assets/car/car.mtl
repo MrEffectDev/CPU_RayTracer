@@ -1,0 +1,106 @@
+# Blender 5.2.0 LTS MTL File: 'None'
+# www.blender.org
+
+newmtl Blink_left
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd Mesh_Base_Color.PNG
+map_Ns Mesh_Roughness.PNG
+map_refl Mesh_Metallic.PNG
+map_d Mesh_Base_Color.PNG
+map_Bump -bm 1.000000 Mesh_Normal_DirectX.PNG
+
+newmtl Blink_right
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd Mesh_Base_Color.PNG
+map_Ns Mesh_Roughness.PNG
+map_refl Mesh_Metallic.PNG
+map_d Mesh_Base_Color.PNG
+map_Bump -bm 1.000000 Mesh_Normal_DirectX.PNG
+
+newmtl Body
+Ns 250.000000
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd Mesh_Base_Color.PNG
+map_d Mesh_Base_Color.PNG
+
+newmtl Fog_light
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd Mesh_Base_Color.PNG
+map_Ns Mesh_Roughness.PNG
+map_refl Mesh_Metallic.PNG
+map_d Mesh_Base_Color.PNG
+map_Bump -bm 1.000000 Mesh_Normal_DirectX.PNG
+
+newmtl Lights_front
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd Mesh_Base_Color.PNG
+map_Ns Mesh_Roughness.PNG
+map_refl Mesh_Metallic.PNG
+map_d Mesh_Base_Color.PNG
+map_Bump -bm 1.000000 Mesh_Normal_DirectX.PNG
+
+newmtl Lights_front_high
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd Mesh_Base_Color.PNG
+map_Ns Mesh_Roughness.PNG
+map_refl Mesh_Metallic.PNG
+map_d Mesh_Base_Color.PNG
+map_Bump -bm 1.000000 Mesh_Normal_DirectX.PNG
+
+newmtl Reverse_light
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd Mesh_Base_Color.PNG
+map_Ns Mesh_Roughness.PNG
+map_refl Mesh_Metallic.PNG
+map_d Mesh_Base_Color.PNG
+map_Bump -bm 1.000000 Mesh_Normal_DirectX.PNG
+
+newmtl TailLights
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+illum 2
+map_Kd Mesh_Base_Color.PNG
+map_Ns Mesh_Roughness.PNG
+map_refl Mesh_Metallic.PNG
+map_d Mesh_Base_Color.PNG
+map_Bump -bm 1.000000 Mesh_Normal_DirectX.PNG
+
+newmtl glass
+Ns 737.117920
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
