@@ -1,9 +1,11 @@
 #pragma once
 
-#include <vector>
 #include <atomic>
+#include <memory>
+#include <vector>
+
+#include "geometry/shape.h"
 #include "math/vec3.h"
-#include "geometry/sphere.h"
 
 namespace raytracer {
 
@@ -13,7 +15,7 @@ namespace raytracer {
         int samples_per_pixel;
         int max_depth;
         Vec3 camera_pos;
-        const std::vector<Sphere>* scene;
+        const std::vector<std::unique_ptr<Shape>>* scene;
         std::vector<uint8_t>* texture_buffer;
         std::atomic<int>* completed_tiles;
         int total_tiles;

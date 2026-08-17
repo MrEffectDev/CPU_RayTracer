@@ -5,6 +5,7 @@
 #include <atomic>
 #include <thread>
 #include <iomanip>
+#include <memory>
 
 // --- Dear ImGui and GLFW Headers ---
 #include "imgui.h"
@@ -20,6 +21,17 @@
 #include "renderer/path_tracer.h"
 #include "renderer/render_context.h"
 #include "renderer/tile_job_data.h"
+#include "geometry/shape.h"
+#include "geometry/plane.h"
+#include "imgui_internal.h"
+#include "geometry/cube.h"
+#include "geometry/rect.h"
+#include "geometry/circle.h"
+#include "geometry/triangle.h"
+#include "geometry/quad.h"
+#include "renderer/scene.h"
+#include "scenes/default_scene.h"
+#include "scenes/abstract_scene.h"
 
 
 using namespace raytracer;
@@ -58,27 +70,22 @@ int main() {
     constexpr int height = 600;
     constexpr int tile_size = 32;
 
-    std::vector<Sphere> scene = {
-        // --- Ground Plane ---
-        { {0.0, -100.5, -1.0}, 100.0, {0.8, 0.8, 0.8}, {0, 0, 0}, MaterialType::Diffuse },
+    std::vector<std::unique_ptr<Scene>> scenes;
+	scenes.push_back(std::make_unique<DefaultScene>());
+	scenes.push_back(std::make_unique<AbstractScene>());
 
-        // --- Simple Objects ---
-        // Center sphere (diffuse)
-        { {0.0, 0.0, -2.0}, 0.5, {0.9, 0.3, 0.2}, {0, 0, 0}, MaterialType::Diffuse },
-        // Left sphere (mirror)
-        { {-1.0, 0.0, -2.2}, 0.5, {1.0, 1.0, 1.0}, {0, 0, 0}, MaterialType::Mirror },
-        // Right sphere (diffuse)
-        { {1.0, 0.0, -1.8}, 0.5, {0.2, 0.4, 0.9}, {0, 0, 0}, MaterialType::Diffuse },
+    std::vector<const char*> scene_names;
+    for (const auto& s : scenes) scene_names.push_back(s->Name());
 
-        // --- Light Source ---
-        { {0.0, 3.0, -1.0}, 0.5, {0, 0, 0}, {15, 15, 15}, MaterialType::Diffuse }
-    };
+    int selected_scene = 0;
+    std::vector<std::unique_ptr<Shape>> scene = scenes[selected_scene]->Build();
+    
 
     std::vector<uint8_t> texture_buffer(width * height * 4, 0);
     std::atomic<int> completed_tiles{ 0 };
 
     RenderContext ctx{
-        width, height, 600, 12, {0.0, 0.0, 1.5}, &scene,
+        width, height, 600, 12, scenes[selected_scene]->CameraPosition(), &scene,
         &texture_buffer, &completed_tiles, 0
     };
 
@@ -109,8 +116,18 @@ int main() {
         ImGui::Begin("RayTracer Control");
         ImGui::Text("CPU RayTracer");
         ImGui::Separator();
-        ImGui::Text("Spheres in Scene: %zu", scene.size());
+		ImGui::Text("Threads: %d", job_system.GetWorkerCount());
+        ImGui::Text("Shapes in Scene: %zu", scene.size());
         ImGui::Text("Resolution: %dx%d | SPP: %d", width, height, ctx.samples_per_pixel);
+
+        if (!is_rendering) {
+            if (ImGui::Combo("Scene", &selected_scene, scene_names.data(), static_cast<int>(scene_names.size()))) {
+                scene = scenes[selected_scene]->Build();
+                ctx.camera_pos = scenes[selected_scene]->CameraPosition();
+                render_finished = false;
+                std::fill(texture_buffer.begin(), texture_buffer.end(), 0);
+            }
+        }
 
         if (!is_rendering && ImGui::Button("Start Render")) {
             if (render_thread.joinable()) {

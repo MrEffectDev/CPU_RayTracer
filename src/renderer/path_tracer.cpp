@@ -20,36 +20,35 @@ namespace raytracer {
         }
     }
 
-    Vec3 TracePath(const Ray& ray, const std::vector<Sphere>& scene, int depth, int max_depth) {
+    Vec3 TracePath(const Ray& ray, const std::vector<std::unique_ptr<Shape>>& scene, int depth, int max_depth) {
         if (depth >= max_depth) return { 0.0, 0.0, 0.0 };
 
+        HitRecord closest_rec;
+        bool hit_anything = false;
         double closest_t = 1e9;
-        const Sphere* hit_sphere = nullptr;
 
-        for (const auto& sphere : scene) {
-            double t;
-            if (sphere.Intersect(ray, t) && t < closest_t) {
-                closest_t = t;
-                hit_sphere = &sphere;
+        for (const auto& shape : scene) {
+            HitRecord temp_rec;
+            if (shape->Intersect(ray, 0.001, closest_t, temp_rec)) {
+                hit_anything = true;
+                closest_t = temp_rec.t;
+                closest_rec = temp_rec;
             }
         }
 
-        if (!hit_sphere) return { 0.02, 0.02, 0.03 };
+        if (!hit_anything) return { 0.02, 0.02, 0.03 };
 
-        Vec3 hit_point = ray.origin + ray.dir * closest_t;
-        Vec3 normal = (hit_point - hit_sphere->center).Normalize();
-        Vec3 emitted = hit_sphere->emission;
+        Vec3 emitted = closest_rec.emission;
+        Vec3 attenuation = closest_rec.color;
 
         Ray next_ray;
-        Vec3 attenuation = hit_sphere->color;
-
-        if (hit_sphere->material == MaterialType::Mirror) {
-            Vec3 reflected = ray.dir - 2.0 * ray.dir.Dot(normal) * normal;
-            next_ray = { hit_point, reflected.Normalize() };
+        if (closest_rec.material == MaterialType::Mirror) {
+            Vec3 reflected = ray.dir - 2.0 * ray.dir.Dot(closest_rec.normal) * closest_rec.normal;
+            next_ray = { closest_rec.point, reflected.Normalize() };
         }
         else {
-            Vec3 new_dir = RandomHemisphereDirection(normal);
-            next_ray = { hit_point, new_dir };
+            Vec3 new_dir = RandomHemisphereDirection(closest_rec.normal);
+            next_ray = { closest_rec.point, new_dir };
         }
 
         Vec3 incoming = TracePath(next_ray, scene, depth + 1, max_depth);
