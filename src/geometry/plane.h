@@ -34,6 +34,11 @@ namespace raytracer {
             rec.material = material;
             return true;
         }
+
+        bool BoundingBox(AABB& out_box) const override {
+            // A plane is infinite, so we cannot create a bounding box for it.
+            return false;
+		}
     };
 
 } // namespace raytracer

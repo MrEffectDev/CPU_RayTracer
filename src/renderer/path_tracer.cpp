@@ -2,6 +2,8 @@
 #include <random>
 #include <algorithm>
 
+#include <cstdint>
+
 namespace raytracer {
 
     double RandomDouble(double min, double max) {
@@ -20,19 +22,37 @@ namespace raytracer {
         }
     }
 
-    Vec3 TracePath(const Ray& ray, const std::vector<std::unique_ptr<Shape>>& scene, int depth, int max_depth) {
+    Vec3 TracePath(const Ray& ray, const RenderContext& ctx, int depth, int max_depth) {
         if (depth >= max_depth) return { 0.0, 0.0, 0.0 };
 
         HitRecord closest_rec;
         bool hit_anything = false;
         double closest_t = 1e9;
 
-        for (const auto& shape : scene) {
-            HitRecord temp_rec;
-            if (shape->Intersect(ray, 0.001, closest_t, temp_rec)) {
+        if (ctx.use_bvh && ctx.bvh_root) {
+            HitRecord rec;
+            if (ctx.bvh_root->Intersect(ray, 0.001, closest_t, rec)) {
                 hit_anything = true;
-                closest_t = temp_rec.t;
-                closest_rec = temp_rec;
+                closest_t = rec.t;
+                closest_rec = rec;
+            }
+            for (const auto& shape : *ctx.unbounded_shapes) {
+                HitRecord rec2;
+                if (shape->Intersect(ray, 0.001, closest_t, rec2)) {
+                    hit_anything = true;
+                    closest_t = rec2.t;
+                    closest_rec = rec2;
+                }
+            }
+        }
+        else {
+            for (const auto& shape : *ctx.scene) {
+                HitRecord rec;
+                if (shape->Intersect(ray, 0.001, closest_t, rec)) {
+                    hit_anything = true;
+                    closest_t = rec.t;
+                    closest_rec = rec;
+                }
             }
         }
 
@@ -51,7 +71,7 @@ namespace raytracer {
             next_ray = { closest_rec.point, new_dir };
         }
 
-        Vec3 incoming = TracePath(next_ray, scene, depth + 1, max_depth);
+        Vec3 incoming = TracePath(next_ray, ctx, depth + 1, max_depth);
         return emitted + (attenuation * incoming);
     }
 
@@ -72,7 +92,7 @@ namespace raytracer {
                     Vec3 ray_dir = Vec3(dir_x, dir_y, -1.0).Normalize();
 
                     Ray ray{ ctx.camera_pos, ray_dir };
-                    pixel_color = pixel_color + TracePath(ray, *ctx.scene, 0, ctx.max_depth);
+                    pixel_color = pixel_color + TracePath(ray, ctx, 0, ctx.max_depth);
                 }
 
                 double scale = 1.0 / ctx.samples_per_pixel;

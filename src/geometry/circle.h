@@ -39,6 +39,13 @@ namespace raytracer {
             rec.material = material;
             return true;
         }
+
+        bool BoundingBox(AABB& out_box) const override {
+            Vec3 r{ radius, radius, radius };
+            const double eps = 1e-4;
+            out_box = { center - r - Vec3{eps,eps,eps}, center + r + Vec3{eps,eps,eps} };
+            return true;
+        }
     };
 
 } // namespace raytracer

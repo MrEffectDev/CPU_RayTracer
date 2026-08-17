@@ -58,6 +58,11 @@ namespace raytracer {
             rec.material = material;
             return true;
         }
+
+        bool BoundingBox(AABB& out_box) const override {
+            out_box = { min_corner, max_corner };
+            return true;
+        }
     };
 
 } // namespace raytracer

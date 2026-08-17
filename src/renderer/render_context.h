@@ -15,7 +15,10 @@ namespace raytracer {
         int samples_per_pixel;
         int max_depth;
         Vec3 camera_pos;
-        const std::vector<std::unique_ptr<Shape>>* scene;
+        const std::vector<std::shared_ptr<Shape>>* scene;
+        std::shared_ptr<Shape> bvh_root;
+        const std::vector<std::shared_ptr<Shape>>* unbounded_shapes;
+        bool use_bvh;
         std::vector<uint8_t>* texture_buffer;
         std::atomic<int>* completed_tiles;
         int total_tiles;

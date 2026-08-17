@@ -65,6 +65,16 @@ namespace raytracer {
             rec.material = material;
             return true;
         }
+
+        bool BoundingBox(AABB& out_box) const override {
+            const double eps = 1e-4;
+            switch (axis) {
+            case Axis::X: out_box = { {k - eps, a0, b0}, {k + eps, a1, b1} }; break;
+            case Axis::Y: out_box = { {a0, k - eps, b0}, {a1, k + eps, b1} }; break;
+            default:      out_box = { {a0, b0, k - eps}, {a1, b1, k + eps} }; break;
+            }
+            return true;
+        }
     };
 
 } // namespace raytracer

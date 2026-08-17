@@ -2,6 +2,7 @@
 
 #include "geometry/ray.h"
 #include "math/vec3.h"
+#include "math/aabb.h"
 
 namespace raytracer {
 
@@ -23,6 +24,7 @@ namespace raytracer {
 	public:
 		virtual ~Shape() = default;
 		virtual bool Intersect(const Ray& ray, double t_min, double t_max, HitRecord& rec) const = 0;
+		virtual bool BoundingBox(AABB& out_box) const = 0;
 	};
 
 } // namespace raytracer

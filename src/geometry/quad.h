@@ -48,6 +48,15 @@ namespace raytracer {
             rec.material = material;
             return true;
         }
+
+        bool BoundingBox(AABB& out_box) const override {
+            Vec3 p0 = corner, p1 = corner + u, p2 = corner + v, p3 = corner + u + v;
+            Vec3 lo{ std::min({p0.x,p1.x,p2.x,p3.x}), std::min({p0.y,p1.y,p2.y,p3.y}), std::min({p0.z,p1.z,p2.z,p3.z}) };
+            Vec3 hi{ std::max({p0.x,p1.x,p2.x,p3.x}), std::max({p0.y,p1.y,p2.y,p3.y}), std::max({p0.z,p1.z,p2.z,p3.z}) };
+            const double eps = 1e-4;
+            out_box = { lo - Vec3{eps,eps,eps}, hi + Vec3{eps,eps,eps} };
+            return true;
+        }
     };
 
 } // namespace raytracer
