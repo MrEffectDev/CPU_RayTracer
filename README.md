@@ -45,6 +45,7 @@ src/
   renderer/   — path tracer, render context
   math/       — vector math
   geometry/   — scene primitives
+  scenes/     - showcase scenes
   main.cpp    — window, viewer, ImGui UI
 ```
 

@@ -25,5 +25,13 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "src/*.cpp" "src/*.h")
 add_executable(CPU_RayTracer ${SOURCES})
 
 target_include_directories(CPU_RayTracer PRIVATE src)
-
+target_include_directories(CPU_RayTracer PRIVATE src third_party/tinyobjloader)
+target_include_directories(CPU_RayTracer PRIVATE src third_party/stb)
 target_link_libraries(CPU_RayTracer PRIVATE imgui)
+
+add_custom_command(TARGET CPU_RayTracer POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E remove_directory $<TARGET_FILE_DIR:CPU_RayTracer>/assets
+    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+        ${CMAKE_CURRENT_SOURCE_DIR}/assets 
+        $<TARGET_FILE_DIR:CPU_RayTracer>/assets
+)

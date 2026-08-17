@@ -33,6 +33,7 @@
 #include "renderer/scene.h"
 #include "scenes/default_scene.h"
 #include "scenes/abstract_scene.h"
+#include "scenes/obj_scene.h"
 #include "renderer/bvh.h"
 
 
@@ -77,6 +78,7 @@ int main() {
 	std::vector<std::unique_ptr<Scene>> scenes;
 	scenes.push_back(std::make_unique<DefaultScene>());
 	scenes.push_back(std::make_unique<AbstractScene>());
+	scenes.push_back(std::make_unique<ObjScene>());
 
 	std::vector<const char*> scene_names;
 	for (const auto& s : scenes) scene_names.push_back(s->Name());
