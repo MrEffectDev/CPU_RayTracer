@@ -6,11 +6,15 @@
 
 A pet project: a CPU ray tracer written from scratch in C++. No vcpkg, no Embree — just wanted to understand how this stuff actually works under the hood.
 
-Currently supports:
+# Currently supports:
 - path tracing with diffuse and mirror materials
 - multithreaded rendering via a custom job system (work-stealing)
-- an ImGui/GLFW viewer with render progress
-- saving the result to .ppm
+- BVH acceleration with AABB intersection tests
+- multiple primitives: spheres, planes, cubes, triangles, rectangles, circles and quads
+- OBJ model loading with UV coordinates and diffuse textures
+- an ImGui/GLFW viewer with render progress and runtime settings
+- saving the result to `.ppm`
+
 
 More is coming — see TODO.md.
 
